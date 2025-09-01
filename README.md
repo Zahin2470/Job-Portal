@@ -60,7 +60,7 @@ npm install
 npm run dev
 Runs the frontend at:
 
-🔑 Environment Variables
+Environment Variables
 Update your .env file based on .env.example inside /server/.
 
 You’ll need:
