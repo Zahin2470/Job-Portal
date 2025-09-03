@@ -5,6 +5,7 @@
 # vite.config.ts.*
 # *.tar.gz
 
+**/__pycache__
 
 # Node.js / React
 node_modules/
