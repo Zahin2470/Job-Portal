@@ -2,6 +2,10 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { ResumeData } from '@/components/resume-templates';
 import axios from "axios";
+<<<<<<< HEAD
+=======
+import { API_BASE } from '../config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 
 
@@ -139,8 +143,13 @@ export const emptyResumeData: ResumeData = {
 };
 
 // Local storage helpers
+<<<<<<< HEAD
 export const RESUME_STORAGE_KEY = 'JobHive_resume_data';
 export const TEMPLATE_STORAGE_KEY = 'JobHive_resume_template';
+=======
+export const RESUME_STORAGE_KEY = 'jobhive_resume_data';
+export const TEMPLATE_STORAGE_KEY = 'jobhive_resume_template';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 export const saveResumeData = async (data: Partial<ResumeData>): Promise<void> => {
   try {
@@ -150,7 +159,11 @@ export const saveResumeData = async (data: Partial<ResumeData>): Promise<void> =
     }
 
     await axios.patch(
+<<<<<<< HEAD
       "http://localhost:8000/api/resume",
+=======
+      `${API_BASE}/api/resume`,
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       data,
       {
         headers: {
@@ -161,9 +174,15 @@ export const saveResumeData = async (data: Partial<ResumeData>): Promise<void> =
     );
 
     // Optionally update localStorage too for faster preview
+<<<<<<< HEAD
     const existingData = JSON.parse(localStorage.getItem("JobHive_resume_data") || "{}");
     const mergedData = { ...existingData, ...data };
     localStorage.setItem("JobHive_resume_data", JSON.stringify(mergedData));
+=======
+    const existingData = JSON.parse(localStorage.getItem("jobhive_resume_data") || "{}");
+    const mergedData = { ...existingData, ...data };
+    localStorage.setItem("jobhive_resume_data", JSON.stringify(mergedData));
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
   } catch (error) {
     console.error("Failed to save resume to backend:", error);
@@ -175,7 +194,11 @@ export const getResumeData = async () => {
   const token = localStorage.getItem("access_token");
 
   try {
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/resume", {
+=======
+    const res = await fetch(`${API_BASE}/api/resume`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "GET",
       headers: {
         "Content-Type": "application/json",

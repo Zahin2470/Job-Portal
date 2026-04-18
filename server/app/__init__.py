@@ -1,5 +1,9 @@
 from urllib import request
+<<<<<<< HEAD
 from flask import Flask, jsonify
+=======
+from flask import Flask, jsonify, send_from_directory
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -38,7 +42,11 @@ def create_app():
 
     # create tables automatically in development
     with app.app_context():
+<<<<<<< HEAD
         from app.models import User, JobSeeker, Employer, Admin, Job, Application, Resume, SavedJob, Report, Notification
+=======
+        from app.models import User, JobSeeker, Employer, Admin, Job, Application, Resume, SavedJob, Report, Notification, PendingUser
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         db.create_all()
         print("✅ All tables created!")
 
@@ -50,14 +58,40 @@ def create_app():
     app.register_blueprint(main, url_prefix='/api')
     app.register_blueprint(admin_bp)
 
+<<<<<<< HEAD
     @app.route("/")
     def app_root():
         return jsonify({"message": "JobHive Flask API is running! Access API routes at /api/..."})
 
+=======
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     @app.route('/uploads/<path:filename>')
     def uploaded_file(filename):
         return app.send_static_file(filename)
 
+<<<<<<< HEAD
+=======
+    # SPA routing: Serve React app for all non-API routes
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_spa(path):
+        # Check if this is an API route
+        if path.startswith('api/') or path.startswith('uploads/'):
+            return jsonify({"error": "Not found"}), 404
+        
+        # Check if the requested file exists in the client build directory
+        client_build_dir = os.path.join(os.getcwd(), '..', 'client', 'dist')
+        if os.path.exists(client_build_dir):
+            # Check if it's a static file
+            if path and os.path.exists(os.path.join(client_build_dir, path)):
+                return send_from_directory(client_build_dir, path)
+            # For all other routes, serve index.html (SPA routing)
+            return send_from_directory(client_build_dir, 'index.html')
+        else:
+            # If build directory doesn't exist, return a helpful message for development
+            return jsonify({"message": "JobHive Flask API is running! Access API routes at /api/... | For frontend, run the client development server."}), 200
+
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     return app
 
    
@@ -66,6 +100,12 @@ def create_app():
 # Config class
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret")
+<<<<<<< HEAD
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "postgresql://postgres:password@localhost:5432/JobHive_db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "super-secret-JobHive-key")
+=======
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "postgresql://postgres:password@localhost:5432/jobhive_db")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "super-secret-jobhive-key")
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316

@@ -11,6 +11,10 @@ import { getResumeData } from "@/utils/resumeUtils";
 import { useUser } from "@/contexts/UserContext";
 import { getAppliedJobs } from "@/utils/jobUtils";
 import { useLocation } from "wouter";
+<<<<<<< HEAD
+=======
+import { API_BASE } from '../config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 export interface Job {
   id: number;
@@ -89,7 +93,11 @@ const normalizeType = (val: string | null | undefined) =>
       if (!user?.id || !isRole("job_seeker")) return;
 
       try {
+<<<<<<< HEAD
         const res = await fetch(`http://localhost:8000/api/job-seeker/${user.id}/saved-jobs`);
+=======
+        const res = await fetch(`${API_BASE}/api/job-seeker/${user.id}/saved-jobs`);
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         if (!res.ok) throw new Error("Failed to fetch saved jobs");
 
         const data = await res.json();
@@ -106,11 +114,18 @@ const normalizeType = (val: string | null | undefined) =>
 useEffect(() => {
   const fetchJobs = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch("http://localhost:8000/api/jobs");
       const data = await response.json();
 
       const mapped = data.map((job: any) => {
         console.log("Raw job type from backend:", job.job_type); // 🔍 Logs actual field
+=======
+      const response = await fetch(`${API_BASE}/api/jobs`);
+      const data = await response.json();
+
+      const mapped = data.map((job: any) => {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         return {
           ...job,
           type: job.type || job.job_type || "", // ✅ Ensure 'type' is always defined
@@ -166,7 +181,10 @@ useEffect(() => {
     const selectedType = normalizeType(localFilters.jobType);
     result = result.filter(job => {
       const normalizedJobType = normalizeType(job.type);
+<<<<<<< HEAD
       console.log("Comparing job type:", normalizedJobType, "with selected:", selectedType); // 🔍
+=======
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       return normalizedJobType === selectedType;
     });
   }
@@ -226,7 +244,10 @@ useEffect(() => {
     return 0;
   });
 
+<<<<<<< HEAD
   console.log("Filtered job results:", result); // ✅ Final result
+=======
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
   setFilteredJobs(result);
 }, [localFilters, allJobs]);
 
@@ -252,8 +273,13 @@ useEffect(() => {
 
     try {
       const endpoint = isAlreadySaved
+<<<<<<< HEAD
         ? "http://localhost:8000/api/unsave"
         : "http://localhost:8000/api/save";
+=======
+        ? `${API_BASE}/api/unsave`
+        : `${API_BASE}/api/save`;
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -289,7 +315,11 @@ const handleApply = async (jobId: number) => {
 
   try {
     const token = localStorage.getItem("access_token");
+<<<<<<< HEAD
     const resumeRes = await fetch("http://localhost:8000/api/resume", {
+=======
+    const resumeRes = await fetch(`${API_BASE}/api/resume`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -303,7 +333,11 @@ const handleApply = async (jobId: number) => {
       return;
     }
 
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/apply", {
+=======
+    const res = await fetch(`${API_BASE}/api/apply`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

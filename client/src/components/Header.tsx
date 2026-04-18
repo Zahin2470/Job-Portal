@@ -6,6 +6,11 @@ import { useUser } from "@/contexts/UserContext";
 import { BellIcon } from "lucide-react";
 import { Popover } from "@headlessui/react";
 import { formatDistanceToNow } from "date-fns";
+<<<<<<< HEAD
+=======
+import logoImage from "@/assets/logo1.png";
+import { API_BASE } from '../config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,7 +50,11 @@ const handleMarkAllRead = async () => {
   if (!user?.id) return; // 🔒 Type-safe check to avoid error
 
   try {
+<<<<<<< HEAD
     await fetch(`http://localhost:8000/api/notifications/${user.id}/mark-all-read`, {
+=======
+    await fetch(`${API_BASE}/api/notifications/${user.id}/mark-all-read`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "PATCH",
     });
     fetchNotifications(); // ✅ Refresh local state
@@ -58,7 +67,11 @@ const handleMarkAllRead = async () => {
 const fetchNotifications = async () => {
   if (!user?.id) return;
   try {
+<<<<<<< HEAD
     const res = await fetch(`http://localhost:8000/api/notifications/${user.id}`);
+=======
+    const res = await fetch(`${API_BASE}/api/notifications/${user.id}`);
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     const data = await res.json();
     setNotifications(data.notifications);
   } catch (err) {
@@ -242,7 +255,11 @@ const renderNavigationLinks = () => {
         <div className="container h-full flex items-center justify-between">
           {/* Logo */}
           <button onClick={() => handleNavigate("/")} className="flex items-center focus:outline-none">
+<<<<<<< HEAD
             <img src="/src/assets/logo1.png" alt="Logo" className="h-10 w-10 mr-2" />
+=======
+            <img src={logoImage} alt="Logo" className="h-10 w-10 mr-2" />
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
             <span className="text-2xl font-bold">Job<span className="text-[#F6C500]">Hive</span></span>
           </button>
           

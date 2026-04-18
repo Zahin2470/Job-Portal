@@ -10,6 +10,10 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+<<<<<<< HEAD
+=======
+import { API_BASE } from '../config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 import { 
   ATSTemplate,
   availableTemplates, 
@@ -67,7 +71,11 @@ const handleSaveResumeToServer = async () => {
     const formData = new FormData();
     formData.append("file", blob, "resume.pdf");
 
+<<<<<<< HEAD
     const uploadRes = await fetch("http://localhost:8000/api/upload", {
+=======
+    const uploadRes = await fetch(`${API_BASE}/api/upload`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       body: formData,
     });
@@ -77,7 +85,11 @@ const handleSaveResumeToServer = async () => {
 
     // ✅ 3. Save full resume data + cv_url
     const token = localStorage.getItem("access_token");
+<<<<<<< HEAD
     const saveRes = await fetch("http://localhost:8000/api/resume/save", {
+=======
+    const saveRes = await fetch(`${API_BASE}/api/resume/save`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: {
         "Content-Type": "application/json",

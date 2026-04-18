@@ -5,6 +5,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Link, useLocation } from 'wouter';
 import RegistrationProgress from '@/components/auth/RegistrationProgress';
 import logo from '@/assets/logo.svg';
+<<<<<<< HEAD
+=======
+import { apiUrl } from '@/config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 /**
  * Employer Registration - Founding Info Step
@@ -34,7 +38,11 @@ const FoundingInfo = () => {
   const handleNext = async (e: React.FormEvent) => {
   e.preventDefault();
 
+<<<<<<< HEAD
   const storedUser = localStorage.getItem("JobHive_user");
+=======
+  const storedUser = localStorage.getItem("jobhive_user");
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
   const userId = storedUser ? JSON.parse(storedUser).id : null;
 
   if (!userId) {
@@ -43,7 +51,11 @@ const FoundingInfo = () => {
   }
 
   try {
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/employer/founding-info", {
+=======
+    const res = await fetch(apiUrl("/api/employer/founding-info"), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -10,6 +10,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
+<<<<<<< HEAD
+=======
+import { apiUrl, imageUrl } from '@/config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 const platformIcons = {
   facebook: <FaFacebook className="mr-2" />, 
@@ -54,7 +58,11 @@ const EmployerProfile: React.FC = () => {
   const fundingOptions = ['bootstrapped', 'seed', 'series-a', 'series-b', 'series-c-plus', 'public'];
   const industryOptions = ['technology', 'healthcare', 'finance', 'education', 'retail', 'manufacturing', 'hospitality', 'media', 'transportation', 'other'];
   const uploadImage = async (file: File, type: 'logo' | 'banner') => {
+<<<<<<< HEAD
     const storedUser = localStorage.getItem('JobHive_user');
+=======
+    const storedUser = localStorage.getItem('jobhive_user');
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     const userId = storedUser ? JSON.parse(storedUser).id : null;
 
     if (!userId) {
@@ -67,7 +75,11 @@ const EmployerProfile: React.FC = () => {
     formData.append('user_id', userId);
     formData.append('image_type', type);
 
+<<<<<<< HEAD
     const res = await fetch('http://localhost:8000/api/employer/upload-image', {
+=======
+    const res = await fetch(apiUrl('/api/employer/upload-image'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: 'POST',
       body: formData,
     });
@@ -95,7 +107,11 @@ const EmployerProfile: React.FC = () => {
   useEffect(() => {
     if (!isAuthenticated) return;
     const token = localStorage.getItem('access_token');
+<<<<<<< HEAD
     fetch('http://localhost:8000/api/employer/profile', {
+=======
+    fetch(apiUrl('/api/employer/profile'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -142,7 +158,11 @@ const handleChangePassword = async () => {
 
   const token = localStorage.getItem('access_token');
   try {
+<<<<<<< HEAD
     const res = await fetch('http://localhost:8000/api/change-password', {
+=======
+    const res = await fetch(apiUrl('/api/change-password'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -183,14 +203,22 @@ const handleChangePassword = async () => {
 };
 
     const handleSave = async () => {
+<<<<<<< HEAD
     const storedUser = localStorage.getItem("JobHive_user");
+=======
+    const storedUser = localStorage.getItem("jobhive_user");
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     const userId = storedUser ? JSON.parse(storedUser).id : null;
     if (!userId) return alert("User not found");
 
     const token = localStorage.getItem('access_token');
 
     try {
+<<<<<<< HEAD
       await fetch('http://localhost:8000/api/employer/company-info', {
+=======
+      await fetch(apiUrl('/api/employer/company-info'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -200,7 +228,11 @@ const handleChangePassword = async () => {
         })
       });
 
+<<<<<<< HEAD
       await fetch('http://localhost:8000/api/employer/founding-info', {
+=======
+      await fetch(apiUrl('/api/employer/founding-info'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -212,7 +244,11 @@ const handleChangePassword = async () => {
         })
       });
 
+<<<<<<< HEAD
       await fetch('http://localhost:8000/api/employer/contact-info', {
+=======
+      await fetch(apiUrl('/api/employer/contact-info'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -225,7 +261,11 @@ const handleChangePassword = async () => {
 
       if (formData.social_links) {
         const linksArray = Object.entries(formData.social_links).map(([platform, url]) => ({ platform, url }));
+<<<<<<< HEAD
         await fetch('http://localhost:8000/api/employer/social-media', {
+=======
+        await fetch(apiUrl('/api/employer/social-media'), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: userId, social_links: linksArray })
@@ -245,7 +285,11 @@ const handleChangePassword = async () => {
     if (!confirmed) return;
     const token = localStorage.getItem("access_token");
     try {
+<<<<<<< HEAD
       const res = await fetch("http://localhost:8000/api/delete-account", {
+=======
+      const res = await fetch(apiUrl("/api/delete-account"), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -293,7 +337,11 @@ const handleChangePassword = async () => {
     ) : (
       companyInfo.banner_url && (
         <img
+<<<<<<< HEAD
           src={`http://localhost:8000${companyInfo.banner_url}`}
+=======
+          src={imageUrl(companyInfo.banner_url)}
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
           alt="Company Banner"
           className="w-full h-48 object-cover rounded-t"
         />
@@ -302,7 +350,11 @@ const handleChangePassword = async () => {
 
     <CardHeader className="flex flex-col sm:flex-row items-center gap-6">
       <Avatar className="w-32 h-32 border-4 border-[#F6C500]">
+<<<<<<< HEAD
         <AvatarImage src={`http://localhost:8000${companyInfo.logo_url}`} />
+=======
+        <AvatarImage src={imageUrl(companyInfo.logo_url)} />
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         <AvatarFallback>{formData.company_name?.charAt(0).toUpperCase() || 'C'}</AvatarFallback>
       </Avatar>
       <div>

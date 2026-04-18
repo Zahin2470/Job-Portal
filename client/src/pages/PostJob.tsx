@@ -5,6 +5,10 @@ import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import JobForm from "@/components/forms/JobForm";
+<<<<<<< HEAD
+=======
+import { API_BASE } from '../config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 interface JobFormValues {
   title: string;
@@ -67,7 +71,11 @@ const PostJob = () => {
         company_logo: user?.logo_url,
       };
 
+<<<<<<< HEAD
       const response = await fetch("http://localhost:8000/api/jobs", {
+=======
+      const response = await fetch(`${API_BASE}/api/jobs`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(jobData),

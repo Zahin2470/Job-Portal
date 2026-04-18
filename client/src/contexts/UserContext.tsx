@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from "wouter";
+<<<<<<< HEAD
 
+=======
+import { API_BASE } from '../config';
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 import axios from 'axios';
 
@@ -102,7 +106,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   // Check for existing user session in localStorage on component mount
  useEffect(() => {
+<<<<<<< HEAD
   const storedUser = localStorage.getItem("JobHive_user");
+=======
+  const storedUser = localStorage.getItem("jobhive_user");
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
   const token = localStorage.getItem("access_token");
 
   if (storedUser && token) {
@@ -169,7 +177,11 @@ const sendVerificationCode = async (
       role: mappedRole,
     };
 
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/send-verification-code", {
+=======
+    const res = await fetch(`${API_BASE}/api/send-verification-code`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -213,7 +225,11 @@ const sendVerificationCode = async (
 
 //     if (response.ok && data.access_token) {
 //       localStorage.setItem("access_token", data.access_token);
+<<<<<<< HEAD
 //       localStorage.setItem("JobHive_user", JSON.stringify(data.user));
+=======
+//       localStorage.setItem("jobhive_user", JSON.stringify(data.user));
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 //       setUser(data.user);
 //       setIsAuthenticated(true);
 //       return true;
@@ -229,7 +245,11 @@ const sendVerificationCode = async (
 
 const login = async (email: string, password: string): Promise<boolean> => {
   try {
+<<<<<<< HEAD
     const response = await fetch("http://localhost:8000/api/login", {
+=======
+    const response = await fetch(`${API_BASE}/api/login`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -256,7 +276,11 @@ const login = async (email: string, password: string): Promise<boolean> => {
     // ✅ Login success
     if (response.ok && data.access_token) {
       localStorage.setItem("access_token", data.access_token);
+<<<<<<< HEAD
       localStorage.setItem("JobHive_user", JSON.stringify(data.user));
+=======
+      localStorage.setItem("jobhive_user", JSON.stringify(data.user));
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       setUser(data.user);
       setIsAuthenticated(true);
       return true;
@@ -282,7 +306,11 @@ const login = async (email: string, password: string): Promise<boolean> => {
  const logout = () => {
   setUser(null);
   setIsAuthenticated(false);
+<<<<<<< HEAD
   localStorage.removeItem("JobHive_user");
+=======
+  localStorage.removeItem("jobhive_user");
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
   localStorage.removeItem("access_token");
 };
 
@@ -304,7 +332,11 @@ const register = async (
       code: verificationCode,
     };
 
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/register", {
+=======
+    const res = await fetch(`${API_BASE}/api/register`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -314,7 +346,11 @@ const register = async (
 
     if (res.ok && data.access_token) {
       localStorage.setItem("access_token", data.access_token);
+<<<<<<< HEAD
       localStorage.setItem("JobHive_user", JSON.stringify(data.user));
+=======
+      localStorage.setItem("jobhive_user", JSON.stringify(data.user));
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       setUser(data.user);
       setIsAuthenticated(true);
       return true;
@@ -350,7 +386,11 @@ const updateProfile = async (updatedData: Partial<User>): Promise<boolean> => {
       profile_pic_url: updatedData.profilePicture || null,
     };
 
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/job-seeker/profile", {
+=======
+    const res = await fetch(`${API_BASE}/api/job-seeker/profile`, {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: {
         "Content-Type": "application/json",

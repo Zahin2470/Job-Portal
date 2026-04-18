@@ -4,6 +4,10 @@ import { Input } from '@/components/ui/input';
 import { useLocation } from 'wouter';
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/contexts/UserContext"; // or wherever your auth context is
+<<<<<<< HEAD
+=======
+import { apiUrl } from "@/config";
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 
 /**
@@ -80,7 +84,11 @@ const sendCodeAndStartTimer = async (targetEmail: string) => {
   }
 
   try {
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/send-verification-code", {
+=======
+    const res = await fetch(apiUrl("/api/send-verification-code"), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email: targetEmail, password, role }),
@@ -123,7 +131,11 @@ const handleVerifyEmail = async () => {
   setIsVerifying(true);
 
   try {
+<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/verify-email", {
+=======
+    const res = await fetch(apiUrl("/api/verify-email"), {
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -149,7 +161,11 @@ const handleVerifyEmail = async () => {
 
       // ✅ Save token and user info
       localStorage.setItem("access_token", data.access_token);
+<<<<<<< HEAD
       localStorage.setItem("JobHive_user", JSON.stringify(data.user));
+=======
+      localStorage.setItem("jobhive_user", JSON.stringify(data.user));
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       setUser(data.user);
       setIsAuthenticated(true);
 
@@ -295,8 +311,13 @@ const handleVerifyEmail = async () => {
           </p>
           <p className="text-sm text-gray-500 mt-1">
             For help, contact{' '}
+<<<<<<< HEAD
             <a href="mailto:support@JobHive.com" className="text-[#F6C500] hover:underline">
               support@JobHive.com
+=======
+            <a href="mailto:support@jobhive.com" className="text-[#F6C500] hover:underline">
+              support@jobhive.com
+>>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
             </a>
           </p>
         </div>
