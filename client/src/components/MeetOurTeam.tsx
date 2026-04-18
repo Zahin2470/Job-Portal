@@ -31,38 +31,17 @@
 
 
 import headshot from '@/assets/headshot.jpg';
-import headshot1 from '@/assets/headshot1.jpeg';
-import headshot2 from '@/assets/headshot2.jpeg';
 
 const teamMembers = [
   {
     name: "Abrar Hossain Zahin",
-    title: "Frontend & UI/UX Developer",
+    title: "Backend & Frontend Developer",
     description: "UI-focused, creative, and solution-oriented problem solver",
     image: headshot,
     linkedin: "https://www.linkedin.com/in/md-abrar-hossain-zahin-3160272a4/",
     kaggle: "https://www.kaggle.com/mdabrarhossainzahin",
     github: "https://github.com/Zahin2470",
     twitter: "https://twitter.com/mdabrarhossainzahin",
-  },
-  {
-    name: "K. M. Sakif Muhtasim",
-    title: "Backend Developer",
-    description: "Passionate about scalable systems, databases",
-    image: headshot1,
-    linkedin: "#", // Replace with actual
-    kaggle: "#", // optional
-    github: "#", // Replace
-    twitter: "#", // Replace
-  },
-  {
-    name: "Mahfuj Alam Imon",
-    title: "UI/UX Designer",
-    description: "Design-driven creator",
-    image: headshot2,
-    linkedin: "#", // Replace
-    github: "#", // Replace
-    twitter: "#", // Replace
   },
 ];
 
