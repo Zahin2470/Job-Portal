@@ -4,8 +4,4 @@ python-dotenv
 psycopg2-binary
 flask-jwt-extended
 flask-cors
-<<<<<<< HEAD
-=======
-requests
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 gunicorn

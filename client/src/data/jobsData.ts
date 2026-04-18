@@ -79,11 +79,7 @@ export const jobs: Job[] = [
     type: "Entry Level",
     location: "Dubai, UAE (On-site)",
     schedule: "Full-time, 40 hours/week",
-<<<<<<< HEAD
     salary: "4000-8000 AED/month",
-=======
-    salary: "4000-6000 AED/month",
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     skills: ["Social Media", "Content Creation", "Analytics"],
     icon: "fa-chart-bar",
     description: "BeeMarketing Agency is looking for a Marketing Assistant to support our marketing team in creating and implementing campaigns for our clients. This is an excellent opportunity for recent graduates to gain hands-on experience in digital marketing.",
@@ -133,11 +129,7 @@ export const jobs: Job[] = [
     type: "Entry Level",
     location: "Riyadh, Saudi Arabia (On-site)",
     schedule: "Full-time, 40 hours/week",
-<<<<<<< HEAD
     salary: "8000-8000 SAR/month",
-=======
-    salary: "6000-8000 SAR/month",
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     skills: ["Accounting", "Excel", "Financial Reporting", "ERP Systems"],
     icon: "fa-calculator",
     description: "BeeFinancial is seeking a Graduate Accountant to join our growing finance team. This position is perfect for recent graduates looking to start their career in accounting and finance.",

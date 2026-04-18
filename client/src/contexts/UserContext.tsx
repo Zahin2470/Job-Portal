@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from "wouter";
-<<<<<<< HEAD
 
-=======
-import { API_BASE } from '../config';
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 import axios from 'axios';
 
@@ -106,11 +102,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   // Check for existing user session in localStorage on component mount
  useEffect(() => {
-<<<<<<< HEAD
   const storedUser = localStorage.getItem("JobHive_user");
-=======
-  const storedUser = localStorage.getItem("jobhive_user");
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
   const token = localStorage.getItem("access_token");
 
   if (storedUser && token) {
@@ -177,11 +169,7 @@ const sendVerificationCode = async (
       role: mappedRole,
     };
 
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/send-verification-code", {
-=======
-    const res = await fetch(`${API_BASE}/api/send-verification-code`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -225,11 +213,7 @@ const sendVerificationCode = async (
 
 //     if (response.ok && data.access_token) {
 //       localStorage.setItem("access_token", data.access_token);
-<<<<<<< HEAD
 //       localStorage.setItem("JobHive_user", JSON.stringify(data.user));
-=======
-//       localStorage.setItem("jobhive_user", JSON.stringify(data.user));
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 //       setUser(data.user);
 //       setIsAuthenticated(true);
 //       return true;
@@ -245,11 +229,7 @@ const sendVerificationCode = async (
 
 const login = async (email: string, password: string): Promise<boolean> => {
   try {
-<<<<<<< HEAD
     const response = await fetch("http://localhost:8000/api/login", {
-=======
-    const response = await fetch(`${API_BASE}/api/login`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -276,11 +256,7 @@ const login = async (email: string, password: string): Promise<boolean> => {
     // ✅ Login success
     if (response.ok && data.access_token) {
       localStorage.setItem("access_token", data.access_token);
-<<<<<<< HEAD
       localStorage.setItem("JobHive_user", JSON.stringify(data.user));
-=======
-      localStorage.setItem("jobhive_user", JSON.stringify(data.user));
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       setUser(data.user);
       setIsAuthenticated(true);
       return true;
@@ -306,11 +282,7 @@ const login = async (email: string, password: string): Promise<boolean> => {
  const logout = () => {
   setUser(null);
   setIsAuthenticated(false);
-<<<<<<< HEAD
   localStorage.removeItem("JobHive_user");
-=======
-  localStorage.removeItem("jobhive_user");
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
   localStorage.removeItem("access_token");
 };
 
@@ -323,48 +295,65 @@ const register = async (
   userData: Partial<User>,
   verificationCode: string
 ): Promise<boolean> => {
-  const email = userData.email;
-  if (!email) return false;
+
+  // Pull email from argument OR from localStorage (set during sendVerificationCode)
+  const email    = userData.email
+                ?? localStorage.getItem("pendingVerificationEmail")
+                ?? "";
+
+  // Pull the rest from localStorage — stored by sendVerificationCode earlier
+  const name     = userData.name
+                ?? localStorage.getItem("registrationFullName")
+                ?? "";
+  const password = localStorage.getItem("registrationPassword") ?? "";
+  const rawRole  = localStorage.getItem("registrationAccountType") ?? "job_seeker";
+  const role     = rawRole === "student" ? "job_seeker" : rawRole;
+
+  if (!email || !name || !password) {
+    console.error("[Register] Missing required fields:", { email, name, password: !!password });
+    return false;
+  }
+
+  console.log("[Register] Attempting registration for:", email, "role:", role);
 
   try {
-    const payload = {
-      email,
-      code: verificationCode,
-    };
-
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/register", {
-=======
-    const res = await fetch(`${API_BASE}/api/register`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ email, name, password, role }),
+      // NOTE: code is NOT sent here — backend checks verification_store["verified"] flag
     });
 
     const data = await res.json();
+    console.log("[Register] Backend response:", data);
 
-    if (res.ok && data.access_token) {
-      localStorage.setItem("access_token", data.access_token);
-<<<<<<< HEAD
-      localStorage.setItem("JobHive_user", JSON.stringify(data.user));
-=======
-      localStorage.setItem("jobhive_user", JSON.stringify(data.user));
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
+    if (res.ok && (data.access_token || data.token)) {
+      const token = data.access_token ?? data.token;   // accept either key
+
+      // Persist session
+      localStorage.setItem("access_token",  token);
+      localStorage.setItem("JobHive_user",  JSON.stringify(data.user));
+
+      // Clean up temporary registration data
+      localStorage.removeItem("pendingVerificationEmail");
+      localStorage.removeItem("registrationFullName");
+      localStorage.removeItem("registrationPassword");
+      localStorage.removeItem("registrationAccountType");
+
       setUser(data.user);
       setIsAuthenticated(true);
       return true;
+
     } else {
-      console.error("Registration verification failed:", data.message || data);
+      console.error("[Register] Failed:", data.error ?? data.message ?? data);
       return false;
     }
+
   } catch (err) {
-    console.error("Registration error:", err);
+    console.error("[Register] Network error:", err);
     return false;
   }
 };
-
-
 
 
 const updateProfile = async (updatedData: Partial<User>): Promise<boolean> => {
@@ -386,11 +375,7 @@ const updateProfile = async (updatedData: Partial<User>): Promise<boolean> => {
       profile_pic_url: updatedData.profilePicture || null,
     };
 
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/job-seeker/profile", {
-=======
-    const res = await fetch(`${API_BASE}/api/job-seeker/profile`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: {
         "Content-Type": "application/json",

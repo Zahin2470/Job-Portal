@@ -1,18 +1,18 @@
 # node_modules
 # dist
-<<<<<<< HEAD
+ 
 # .DS_Storekf
-=======
+   
 # .DS_Store
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
+  
 # server/public
 # vite.config.ts.*
 # *.tar.gz
 
-<<<<<<< HEAD
+ 
 **/__pycache__
-=======
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
+   
+  
 
 # Node.js / React
 node_modules/
@@ -38,8 +38,8 @@ server/uploads/
 .env
 venv/
 server/uploads/
-<<<<<<< HEAD
-=======
+ 
+   
 
 .vercel
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
+  

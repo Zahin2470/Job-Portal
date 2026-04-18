@@ -5,10 +5,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Link, useLocation } from 'wouter';
 import { useUser } from '@/contexts/UserContext';
 import { useToast } from '@/hooks/use-toast';
-<<<<<<< HEAD
-=======
-import loginImage from '@/assets/login.png';
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 /**
  * Login Page Component
@@ -55,11 +51,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       });
 
       // Retrieve user from localStorage after login
-<<<<<<< HEAD
       const storedUser = localStorage.getItem("JobHive_user");
-=======
-      const storedUser = localStorage.getItem("jobhive_user");
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
       if (parsedUser?.role === "admin") {
@@ -208,11 +200,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
             <div className="mt-6">
               <img
-<<<<<<< HEAD
                 src = "/src/assets/login.png" 
-=======
-                src={loginImage}
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
                 alt="People collaborating" 
                 className="w-3/4 mx-auto"
               />

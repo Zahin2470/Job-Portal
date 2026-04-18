@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import { useRoute } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
-=======
-import { apiUrl } from "@/config";
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 const ApplicantsPage = () => {
   const [match, params] = useRoute("/employer/job/:jobId/applicants");
@@ -26,11 +22,7 @@ const ApplicantsPage = () => {
   useEffect(() => {
   if (!jobId) return;
 
-<<<<<<< HEAD
   fetch(`http://localhost:8000/api/jobs/${jobId}/applicants`)
-=======
-  fetch(apiUrl(`/api/jobs/${jobId}/applicants`))
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     .then((res) => res.json())
     .then((data) => {
       console.log("Applicants response:", data); // 👈 check this

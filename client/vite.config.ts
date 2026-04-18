@@ -8,24 +8,4 @@ export default defineConfig({
   resolve: {
     alias: { '@': path.resolve(__dirname, 'src') },
   },
-<<<<<<< HEAD
-=======
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['wouter'],
-        },
-      },
-    },
-  },
-  server: {
-    port: 3000,
-    open: true,
-  },
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 })

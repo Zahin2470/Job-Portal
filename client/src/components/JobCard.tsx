@@ -7,10 +7,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { getResumeData } from "@/utils/resumeUtils";
 import { Link } from "wouter";
-<<<<<<< HEAD
-=======
-import { API_BASE } from '../config';
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 interface JobCardProps {
   job: Job;
@@ -61,11 +57,7 @@ const JobCard = ({
     if (!user?.id) return;
 
     try {
-<<<<<<< HEAD
       const res = await fetch(`http://localhost:8000/api/save`, {
-=======
-      const res = await fetch(`${API_BASE}/api/save`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ job_id: jobId, user_id: user.id }),
@@ -109,21 +101,13 @@ const handleApply = async () => {
 
   try {
     const token = localStorage.getItem("access_token");
-<<<<<<< HEAD
     const resumeRes = await fetch("http://localhost:8000/api/resume", {
-=======
-    const resumeRes = await fetch(`${API_BASE}/api/resume`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       headers: { Authorization: `Bearer ${token}` },
     });
 
     const resumeSnapshot = await resumeRes.json();
 
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/apply", {
-=======
-    const res = await fetch(`${API_BASE}/api/apply`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -190,11 +174,7 @@ const handleApply = async () => {
         <div className="flex items-center gap-2 mt-1">
           {job.company_logo && (
             <img
-<<<<<<< HEAD
               src={`http://localhost:8000${job.company_logo}`}
-=======
-              src={`${API_BASE}${job.company_logo}`}
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
               alt={`${job.company_name} logo`}
               className="w-6 h-6 rounded-full object-cover"
             />

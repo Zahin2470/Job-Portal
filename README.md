@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 # Job-Portal
 =======
-=======
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 # 💼 JobHive – Job Portal for Students and Fresh Graduates
 
 JobHive is a full-stack job portal designed to help students and fresh graduates discover jobs, build resumes, and connect with employers — all in one place.
@@ -58,18 +54,12 @@ Runs the backend at: http://localhost:8000
 
 
 3. Frontend Setup
-cd ../client
+cd client
 npm install
 npm run dev
-<<<<<<< HEAD
 Runs the frontend at:
 
 Environment Variables
-=======
-Runs the frontend at: http://localhost:5173
-
-🔑 Environment Variables
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 Update your .env file based on .env.example inside /server/.
 
 You’ll need:
@@ -101,7 +91,6 @@ Extras
 Affinda API, Brevo SMTP, JWT, Cloud Deployment Ready
 
 👋 Author
-<<<<<<< HEAD
 Made with ❤️ by 
 Abrar Hossain Zahin
 K. M. Sakif Muhtasim
@@ -109,9 +98,3 @@ Mahfuj Alam Imon
 
 🙋 Contact
 If you’d like to collaborate or hire, connect with me on LinkedIn.
-=======
-Made with by Abrar Hossain Zahin
-
-🙋 Contact
-If you’d like to collaborate or hire, connect with me on LinkedIn.
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316

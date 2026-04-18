@@ -6,10 +6,6 @@ import { useUser } from "@/contexts/UserContext";
 import { useToast } from "@/hooks/use-toast";
 import { getResumeData } from "@/utils/resumeUtils";
 import { getAppliedJobs } from "@/utils/jobUtils";
-<<<<<<< HEAD
-=======
-import { apiUrl, imageUrl } from "@/config";
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 
 interface Job {
@@ -47,11 +43,7 @@ const JobDetailsPage = () => {
   try {
     const token = localStorage.getItem("access_token");
 
-<<<<<<< HEAD
     const response = await fetch("http://localhost:8000/api/reports", {
-=======
-    const response = await fetch(apiUrl("/api/reports"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,11 +76,7 @@ const JobDetailsPage = () => {
 
   useEffect(() => {
     const fetchJob = async () => {
-<<<<<<< HEAD
       const res = await fetch(`http://localhost:8000/api/jobs/${id}`);
-=======
-      const res = await fetch(apiUrl(`/api/jobs/${id}`));
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       const data = await res.json();
       setJob(data);
     };
@@ -135,11 +123,7 @@ const handleApply = async () => {
   try {
     const token = localStorage.getItem("access_token");
 
-<<<<<<< HEAD
     const resumeRes = await fetch("http://localhost:8000/api/resume", {
-=======
-    const resumeRes = await fetch(apiUrl("/api/resume"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -154,11 +138,7 @@ const handleApply = async () => {
       return;
     }
 
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/apply", {
-=======
-    const res = await fetch(apiUrl("/api/apply"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -191,11 +171,7 @@ const handleApply = async () => {
   const handleSave = async () => {
     if (!user?.id) return;
 
-<<<<<<< HEAD
     const endpoint = isSaved ? "http://localhost:8000/api/unsave" : "http://localhost:8000/api/save";
-=======
-    const endpoint = isSaved ? apiUrl("/api/unsave") : apiUrl("/api/save");
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
     try {
       const res = await fetch(endpoint, {
@@ -238,11 +214,7 @@ const handleApply = async () => {
           <div className="flex items-center gap-3">
             {job.company_logo && (
               <img
-<<<<<<< HEAD
                 src={`http://localhost:8000${job.company_logo}`}
-=======
-                src={imageUrl(job.company_logo)}
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
                 alt={`${job.company_name} logo`}
                 className="w-10 h-10 object-cover rounded-full border"
               />

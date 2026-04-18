@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -161,9 +160,9 @@ def create_app():
             "isVerified": True
         }), 200
 
-    # ═══════════════════════════════════════════════════════════
-    # ROUTE 3 — Register  ← THIS WAS MISSING
-    # ═══════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════
+# ROUTE 3 — Register
+# ═══════════════════════════════════════════════════════════
     @app.route("/api/register", methods=["POST", "OPTIONS"])
     def register():
         if request.method == "OPTIONS":
@@ -173,15 +172,14 @@ def create_app():
         email    = data.get("email", "").strip().lower()
         password = data.get("password", "")
         name     = data.get("name", "").strip()
-        role     = data.get("role", "job_seeker")   # "job_seeker" | "employer"
+        role     = data.get("role", "job_seeker")
 
-        print(f"[DEBUG] Register attempt for {email}, role={role}")
+        print(f"[DEBUG] Register payload received: email={email}, name={name}, role={role}, password={'✓' if password else '✗'}")
 
-        # Validation
         if not email or not password or not name:
             return jsonify({
                 "success": False,
-                "error":   "Name, email, and password are required."
+                "error":   f"Missing fields — email={bool(email)}, name={bool(name)}, password={bool(password)}"
             }), 400
 
         if email in users_store:
@@ -190,8 +188,10 @@ def create_app():
                 "error":   "An account with this email already exists."
             }), 409
 
-        # Check that the email was verified
+        # Check email was verified
         record = verification_store.get(email)
+        print(f"[DEBUG] Verification record for {email}: {record}")
+
         if not record or not record.get("verified"):
             return jsonify({
                 "success": False,
@@ -207,17 +207,15 @@ def create_app():
             "is_verified":   True,
             "created_at":    datetime.now(timezone.utc).isoformat()
         }
-
-        # Clean up verification store
         verification_store.pop(email, None)
 
         token = make_token(email, role)
-        print(f"[SUCCESS] Registered user {email} as {role}")
+        print(f"[SUCCESS] Registered {email} as {role}")
 
         return jsonify({
-            "success": True,
-            "message": "Account created successfully!",
-            "token":   token,
+            "success":      True,
+            "message":      "Account created successfully!",
+            "access_token": token,          # ← changed from "token" to "access_token"
             "user": {
                 "name":       name,
                 "email":      email,
@@ -225,6 +223,7 @@ def create_app():
                 "isVerified": True
             }
         }), 201
+
 
     # ═══════════════════════════════════════════════════════════
     # ROUTE 4 — Login
@@ -250,8 +249,8 @@ def create_app():
         print(f"[SUCCESS] Login for {email}")
 
         return jsonify({
-            "success": True,
-            "token":   token,
+            "success":      True,
+            "access_token": token,          # ← consistent with register + frontend
             "user": {
                 "name":       user["name"],
                 "email":      email,
@@ -318,23 +317,8 @@ def create_app():
 
     return app
 
-=======
-from app import create_app
-import os
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 app = create_app()
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     app.run(debug=True, port=8000)
-=======
-    # Get port from environment variable (for Render) or default to 8000
-    port = int(os.environ.get('PORT', 8000))
-    # Disable debug mode in production
-    debug_mode = os.environ.get('FLASK_ENV') == 'development'
-    # Bind to 0.0.0.0 for external access (required for Render)
-    app.run(host='0.0.0.0', debug=debug_mode, port=port)
-    
-
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316

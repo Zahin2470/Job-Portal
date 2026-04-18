@@ -1,10 +1,6 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
-<<<<<<< HEAD
 from datetime import datetime
-=======
-from datetime import datetime, timezone
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 from sqlalchemy.dialects.postgresql import JSONB
 import json
 
@@ -20,11 +16,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False)  # 'jobseeker', 'employer', 'admin'
-<<<<<<< HEAD
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-=======
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     is_verified = db.Column(db.Boolean, default=False)
     verification_code = db.Column(db.String(6), nullable=True)
 
@@ -47,11 +39,7 @@ class Resume(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("job_seekers.id"), nullable=False, unique=True)
     data = db.Column(db.Text, nullable=True)  # JSON stored as string
-<<<<<<< HEAD
     last_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) # New field: tracks last modification
-=======
-    last_updated = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc)) # New field: tracks last modification
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
     def __repr__(self):
         return f'<Resume for owner_id {self.owner_id}>'
@@ -220,11 +208,7 @@ class Job(db.Model):
     requirements = db.Column(db.Text, nullable=False)
     salary = db.Column(db.String(100))
     deadline = db.Column(db.Date)
-<<<<<<< HEAD
     created_at = db.Column(db.DateTime, default=datetime.utcnow) 
-=======
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc)) 
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     skills = db.Column(db.Text)
     status = db.Column(db.String(20), default="active")  # values: active, expired, closed
 
@@ -284,11 +268,7 @@ class Application(db.Model):
     applicant_id = db.Column(db.Integer, db.ForeignKey("job_seekers.id"), nullable=False)
     job_id = db.Column(db.Integer, db.ForeignKey("jobs.id"), nullable=False)
     resume_snapshot = db.Column(JSONB, nullable=False)  # Storing resume as JSON
-<<<<<<< HEAD
     applied_at = db.Column(db.DateTime, default=datetime.utcnow)
-=======
-    applied_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     cv_url = db.Column(db.String(1000))
 
     job = db.relationship("Job", back_populates="applications")
@@ -322,11 +302,7 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     receiver_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     body = db.Column(db.String(2000), nullable=False)
-<<<<<<< HEAD
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-=======
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
     admin_id = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
     read = db.Column(db.Boolean, default=False)
 
@@ -359,11 +335,7 @@ class Report(db.Model):
     reporter_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     reason = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(20), default="pending")  # pending, resolved, investigating
-<<<<<<< HEAD
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-=======
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
     job = db.relationship("Job", backref="reports")
     reporter = db.relationship("User", backref="reports")
@@ -380,57 +352,4 @@ class Report(db.Model):
     }
 
 
-<<<<<<< HEAD
-=======
-# ============================
-# 📧 PendingUser Model (replaces in-memory pending_users)
-# ============================
-class PendingUser(db.Model):
-    __tablename__ = "pending_users"
-
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)
-    role = db.Column(db.String(20), nullable=False)  # 'job_seeker', 'employer'
-    verification_code = db.Column(db.String(6), nullable=False)
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    expires_at = db.Column(db.DateTime, nullable=False)  # Auto-cleanup expired entries
-
-    def set_password(self, password):
-        from werkzeug.security import generate_password_hash
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        from werkzeug.security import check_password_hash
-        return check_password_hash(self.password_hash, password)
-
-    @classmethod
-    def cleanup_expired(cls):
-        """Remove expired pending users from database"""
-        from datetime import datetime, timezone
-        current_time = datetime.now(timezone.utc)
-        
-        # Get all pending users and check expiration manually to handle timezone issues
-        all_pending = cls.query.all()
-        expired_count = 0
-        
-        for pending_user in all_pending:
-            expires_at = pending_user.expires_at
-            # If expires_at is naive, make it timezone-aware (assume UTC)
-            if expires_at.tzinfo is None:
-                expires_at = expires_at.replace(tzinfo=timezone.utc)
-            
-            if expires_at < current_time:
-                db.session.delete(pending_user)
-                expired_count += 1
-        
-        db.session.commit()
-        return expired_count
-
-    def __repr__(self):
-        return f'<PendingUser {self.email}>'
-
-
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 

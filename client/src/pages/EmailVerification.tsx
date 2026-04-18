@@ -4,10 +4,6 @@ import { Input } from '@/components/ui/input';
 import { useLocation } from 'wouter';
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/contexts/UserContext"; // or wherever your auth context is
-<<<<<<< HEAD
-=======
-import { apiUrl } from "@/config";
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 
 /**
@@ -26,14 +22,6 @@ const EmailVerification = () => {
   const [resendTimer, setResendTimer] = useState(60); // 60s countdown
   const [canResend, setCanResend] = useState(false);
   const { setUser, setIsAuthenticated, isAuthenticated, user, isRole } = useUser();
-
-
-  
-
- 
-
-
-
 
   // Set page title and get email
  useEffect(() => {
@@ -84,11 +72,7 @@ const sendCodeAndStartTimer = async (targetEmail: string) => {
   }
 
   try {
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/send-verification-code", {
-=======
-    const res = await fetch(apiUrl("/api/send-verification-code"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email: targetEmail, password, role }),
@@ -131,71 +115,83 @@ const handleVerifyEmail = async () => {
   setIsVerifying(true);
 
   try {
-<<<<<<< HEAD
-    const res = await fetch("http://localhost:8000/api/verify-email", {
-=======
-    const res = await fetch(apiUrl("/api/verify-email"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
+    // ─────────────────────────────────────────
+    // STEP 1: Verify the code
+    // ─────────────────────────────────────────
+    const verifyRes = await fetch("http://localhost:8000/api/verify-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-      email,
-      code: verificationCode,
-      name: localStorage.getItem("registrationFullName"),
-      password: localStorage.getItem("registrationPassword"),
-      role:
-        localStorage.getItem("registrationAccountType") === "student"
-          ? "job_seeker"
-          : "employer",
-    }),
-
+      body: JSON.stringify({ email, code: verificationCode }),
     });
 
-    const data = await res.json();
+    const verifyData = await verifyRes.json();
 
-    if (res.ok && data.access_token) {
-      toast({
-        title: "Email Verified!",
-        description: data.message || "Welcome to JobHive!",
-      });
-
-      // ✅ Save token and user info
-      localStorage.setItem("access_token", data.access_token);
-<<<<<<< HEAD
-      localStorage.setItem("JobHive_user", JSON.stringify(data.user));
-=======
-      localStorage.setItem("jobhive_user", JSON.stringify(data.user));
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
-      setUser(data.user);
-      setIsAuthenticated(true);
-
-      const accountType = localStorage.getItem("registrationAccountType");
-
-      // 🔄 Clean up temp registration data
-      localStorage.removeItem("pendingVerificationEmail");
-      localStorage.removeItem("registrationAccountType");
-      localStorage.removeItem("registrationFullName");
-
-      // ✅ Redirect based on role
-      if (accountType === "employer") {
-        navigate("/register/employer");
-      } else if (accountType === "student") {
-        navigate("/register/student");
-      } else {
-        navigate("/dashboard");
-      }
-
-    } else {
+    if (!verifyRes.ok || !verifyData.success) {
       toast({
         title: "Verification Failed",
-        description: data.message || "Code is invalid.",
+        description: verifyData.error ?? "Incorrect or expired code.",
         variant: "destructive",
       });
+      setIsVerifying(false);
+      return;   // stop here — don't proceed to register
     }
+
+    // ─────────────────────────────────────────
+    // STEP 2: Register the account
+    // ─────────────────────────────────────────
+    const name     = localStorage.getItem("registrationFullName") ?? "";
+    const password = localStorage.getItem("registrationPassword") ?? "";
+    const rawRole  = localStorage.getItem("registrationAccountType") ?? "job_seeker";
+    const role     = rawRole === "student" ? "job_seeker" : rawRole;
+
+    const registerRes = await fetch("http://localhost:8000/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name, password, role }),
+    });
+
+    const registerData = await registerRes.json();
+
+    if (!registerRes.ok || !registerData.access_token) {
+      toast({
+        title: "Registration Failed",
+        description: registerData.error ?? "Could not create account. Please try again.",
+        variant: "destructive",
+      });
+      setIsVerifying(false);
+      return;
+    }
+
+    // ─────────────────────────────────────────
+    // STEP 3: Save session and redirect
+    // ─────────────────────────────────────────
+    localStorage.setItem("access_token", registerData.access_token);
+    localStorage.setItem("JobHive_user", JSON.stringify(registerData.user));
+    setUser(registerData.user);
+    setIsAuthenticated(true);
+
+    toast({
+      title: "Welcome to JobHive! 🐝",
+      description: "Your account has been created successfully.",
+    });
+
+    // Clean up temp data
+    localStorage.removeItem("pendingVerificationEmail");
+    localStorage.removeItem("registrationFullName");
+    localStorage.removeItem("registrationPassword");
+    localStorage.removeItem("registrationAccountType");
+
+    // Redirect based on role
+    if (rawRole === "employer") {
+      navigate("/register/employer");
+    } else {
+      navigate("/register/student");
+    }
+
   } catch (err) {
     toast({
-      title: "Error",
-      description: "Network error. Please try again.",
+      title: "Network Error",
+      description: "Could not connect to server. Please try again.",
       variant: "destructive",
     });
   } finally {
@@ -311,13 +307,8 @@ const handleVerifyEmail = async () => {
           </p>
           <p className="text-sm text-gray-500 mt-1">
             For help, contact{' '}
-<<<<<<< HEAD
             <a href="mailto:support@JobHive.com" className="text-[#F6C500] hover:underline">
               support@JobHive.com
-=======
-            <a href="mailto:support@jobhive.com" className="text-[#F6C500] hover:underline">
-              support@jobhive.com
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
             </a>
           </p>
         </div>

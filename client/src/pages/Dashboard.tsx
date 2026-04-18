@@ -12,10 +12,6 @@ import { getAppliedJobs } from "@/utils/jobUtils";
 import { calculateResumeCompletion } from "@/utils/calculateResumeCompletion";
 import { getResumeData } from "@/utils/resumeUtils"; // or wherever it lives
 import { Link } from "wouter";
-<<<<<<< HEAD
-=======
-import { API_BASE } from '../config';
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 
 
@@ -89,11 +85,7 @@ useEffect(() => {
     if (!user?.id || !isRole("job_seeker")) return;
 
     try {
-<<<<<<< HEAD
       const res = await fetch(`http://localhost:8000/api/job-seeker/${user.id}/saved-jobs`);
-=======
-      const res = await fetch(`${API_BASE}/api/job-seeker/${user.id}/saved-jobs`);
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       if (!res.ok) throw new Error("Failed to fetch saved jobs");
       const data = await res.json();
       setSavedJobs(data);
@@ -125,11 +117,7 @@ useEffect(() => {
  const fetchMyJobs = async () => {
   if (user?.id) {
     try {
-<<<<<<< HEAD
       const res = await fetch(`http://localhost:8000/api/employer/${user.id}/jobs`);
-=======
-      const res = await fetch(`${API_BASE}/api/employer/${user.id}/jobs`);
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       const data = await res.json();
       setMyJobs(data.jobs);
     } catch (error) {
@@ -151,11 +139,7 @@ const toggleStatus = async (job: Job) => {
   const newStatus = job.status === "expired" ? "active" : "expired";
 
   try {
-<<<<<<< HEAD
     await fetch(`http://localhost:8000/api/jobs/${job.id}/status`, {
-=======
-    await fetch(`${API_BASE}/api/jobs/${job.id}/status`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus }),
@@ -182,11 +166,7 @@ const deleteJob = async (jobId: number) => {
   if (!confirmed) return;
 
   try {
-<<<<<<< HEAD
     await fetch(`http://localhost:8000/api/jobs/${jobId}`, {
-=======
-    await fetch(`${API_BASE}/api/jobs/${jobId}`, {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: 'DELETE',
     });
 

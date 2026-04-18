@@ -9,10 +9,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
-<<<<<<< HEAD
-=======
-import { apiUrl, imageUrl } from '@/config';
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
 
 /**
  * Profile Page Component
@@ -75,11 +71,7 @@ const handleDeleteAccount = async () => {
   const token = localStorage.getItem("access_token");
 
   try {
-<<<<<<< HEAD
     const res = await fetch("http://localhost:8000/api/delete-account", {
-=======
-    const res = await fetch(apiUrl("/api/delete-account"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -146,11 +138,7 @@ const handleChangePassword = async () => {
 
   const token = localStorage.getItem('access_token');
   try {
-<<<<<<< HEAD
     const res = await fetch('http://localhost:8000/api/change-password', {
-=======
-    const res = await fetch(apiUrl('/api/change-password'), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -223,11 +211,7 @@ useEffect(() => {
     const token = localStorage.getItem("access_token");
 
     try {
-<<<<<<< HEAD
       const response = await fetch("http://localhost:8000/api/job-seeker/profile", {
-=======
-      const response = await fetch(apiUrl("/api/job-seeker/profile"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -884,11 +868,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     const token = localStorage.getItem("access_token");
 
                     try {
-<<<<<<< HEAD
                       const res = await fetch("http://localhost:8000/api/delete-account", {
-=======
-                      const res = await fetch(apiUrl("/api/delete-account"), {
->>>>>>> a0174eb1882d98f6fb0670cc5f8547e5b6cbe316
                         method: "DELETE",
                         headers: {
                           Authorization: `Bearer ${token}`,
