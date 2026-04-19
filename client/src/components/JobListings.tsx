@@ -73,81 +73,85 @@ const normalizeType = (val: string | null | undefined) =>
 
 
 
-  useEffect(() => {
-    setLocalFilters({
-      location: filters.location || "all_locations",
-      jobType: filters.jobType || "all_types",
-      experience: filters.experience || "all_levels",
-      industry: filters.industry || "all_industries",
-      search: filters.search || "",
-      skills: filters.skills || []
-    });
-  }, [filters]);
-
+  // ── Fetch saved jobs (with token + correct data extraction) ──
   useEffect(() => {
     const fetchSavedJobs = async () => {
       if (!user?.id || !isRole("job_seeker")) return;
 
       try {
-        const res = await fetch(`http://localhost:8000/api/job-seeker/${user.id}/saved-jobs`);
-        if (!res.ok) throw new Error("Failed to fetch saved jobs");
-
+        const token = localStorage.getItem("access_token") ?? "";
+        const res = await fetch(
+          `http://localhost:8000/api/job-seeker/${user.id}/saved-jobs`,
+          { headers: { "Authorization": `Bearer ${token}` } }
+        );
         const data = await res.json();
-        const ids = data.map((job: any) => job.id);
-        setSavedJobs(ids);
+
+        // Backend returns { success, saved_jobs: [] } — not a bare array
+        const jobList = data.saved_jobs ?? [];
+        setSavedJobs(jobList.map((job: any) => job.id));
       } catch (err) {
         console.error("Error loading saved jobs:", err);
+        setSavedJobs([]);
       }
     };
-
     fetchSavedJobs();
   }, [user]);
 
-useEffect(() => {
-  const fetchJobs = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/jobs");
-      const data = await response.json();
 
-      const mapped = data.map((job: any) => {
-        console.log("Raw job type from backend:", job.job_type); // 🔍 Logs actual field
-        return {
+  // ── Fetch all jobs (extract .jobs array from response object) ──
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res  = await fetch("http://localhost:8000/api/jobs");
+        const data = await res.json();
+
+        // Backend returns { success, jobs: [], total } — extract .jobs
+        const rawJobs = Array.isArray(data) ? data : (data.jobs ?? []);
+
+        const mapped = rawJobs.map((job: any) => ({
           ...job,
-          type: job.type || job.job_type || "", // ✅ Ensure 'type' is always defined
-          postedDate: job.posted_date,
+          type:       job.type      || job.job_type || "",
+          postedDate: job.posted_at || job.posted_date || "",
           skills: Array.isArray(job.skills)
             ? job.skills
             : typeof job.skills === "string"
               ? job.skills.split(",").map((s: string) => s.trim())
               : [],
-        };
-      });
+        }));
 
-      setAllJobs(mapped);
-      setFilteredJobs(mapped);
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-    }
-  };
-
-  fetchJobs();
-}, []);
-
-
-
-  useEffect(() => {
-    const fetchApplied = async () => {
-      if (user?.id && isRole("job_seeker")) {
-        try {
-          const applied = await getAppliedJobs(Number(user.id));
-          const jobIds = applied.map((job: any) => job.id);
-          setAppliedJobs(jobIds);
-        } catch (err) {
-          console.error("Failed to load applied jobs", err);
-        }
+        setAllJobs(mapped);
+        setFilteredJobs(mapped);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+        setAllJobs([]);
+        setFilteredJobs([]);
       }
     };
+    fetchJobs();
+  }, []);
 
+
+  // ── Fetch applied jobs (extract .applications array) ──────────
+  useEffect(() => {
+    const fetchApplied = async () => {
+      if (!user?.id || !isRole("job_seeker")) return;
+
+      try {
+        const token = localStorage.getItem("access_token") ?? "";
+        const res = await fetch(
+          `http://localhost:8000/api/job-seeker/${user.id}/applied-jobs`,
+          { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        const data = await res.json();
+
+        // Backend returns { success, applications: [] }
+        const apps = data.applications ?? [];
+        setAppliedJobs(apps.map((app: any) => app.job_id ?? app.id));
+      } catch (err) {
+        console.error("Failed to load applied jobs:", err);
+        setAppliedJobs([]);
+      }
+    };
     fetchApplied();
   }, [user?.id]);
 

@@ -45,7 +45,12 @@ const ResumeBuilder = () => {
   
   
   // Resume data state
-  const [resumeData, setResumeData] = useState<ResumeData>(emptyResumeData);
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    ...emptyResumeData,
+    skills:     emptyResumeData.skills     ?? [],
+    education:  emptyResumeData.education  ?? [],
+    experience: emptyResumeData.experience ?? [],
+  });
   const [activeTab, setActiveTab] = useState("personal");
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('ats');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -561,12 +566,12 @@ const handleSaveResumeToServer = async () => {
                   Add your educational background, starting with the most recent. Include relevant coursework and achievements.
                 </p>
                 
-                {resumeData.education.map((education, index) => (
+                {(resumeData.education ?? []).map((education, index) => (
                   <Card key={index} className="mb-6 border-dashed">
                     <CardContent className="p-6">
                       <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-semibold">Education #{index + 1}</h3>
-                        {resumeData.education.length > 1 && (
+                        {(resumeData.education ?? []).length > 1 && (
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -669,12 +674,12 @@ const handleSaveResumeToServer = async () => {
                   Add your work experience, internships, or volunteer work. For students, include projects or part-time jobs.
                 </p>
                 
-                {resumeData.experience.map((experience, index) => (
+                {(resumeData.experience ?? []).map((experience, index) => (
                   <Card key={index} className="mb-6 border-dashed">
                     <CardContent className="p-6">
                       <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-semibold">Experience #{index + 1}</h3>
-                        {resumeData.experience.length > 1 && (
+                        {(resumeData.experience ?? []).length > 1 && (
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -771,7 +776,7 @@ const handleSaveResumeToServer = async () => {
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold mb-4">Your Skills</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {resumeData.skills.map((skill, index) => (
+                    {(resumeData.skills ?? []).map((skill, index) => (
                       <div key={index} className="flex items-center space-x-2">
                         <Input 
                           value={skill.name}

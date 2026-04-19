@@ -67,13 +67,23 @@ const PostJob = () => {
         company_logo: user?.logo_url,
       };
 
-      const response = await fetch("http://localhost:8000/api/jobs", {
+      // ✅ AFTER — with token
+      const token = localStorage.getItem("access_token") ?? "";
+      const res = await fetch("http://localhost:8000/api/jobs", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify(jobData),
       });
-
-      if (!response.ok) throw new Error("Failed to post job");
+      const data = await res.json();
+      if (data.success) {
+        // job posted successfully
+        navigate("/dashboard");
+      } else {
+        console.error("Job post failed:", data.error);
+      }
 
       toast({
         title: "Job Posted",

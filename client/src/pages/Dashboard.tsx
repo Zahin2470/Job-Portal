@@ -12,6 +12,7 @@ import { getAppliedJobs } from "@/utils/jobUtils";
 import { calculateResumeCompletion } from "@/utils/calculateResumeCompletion";
 import { getResumeData } from "@/utils/resumeUtils"; // or wherever it lives
 import { Link } from "wouter";
+import { apiGet } from "@/lib/api";
 
 
 
@@ -82,53 +83,83 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchSavedJobs = async () => {
+    // Check if user ID exists before fetching
     if (!user?.id || !isRole("job_seeker")) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/job-seeker/${user.id}/saved-jobs`);
-      if (!res.ok) throw new Error("Failed to fetch saved jobs");
+      // Get the token from storage
+      const token = localStorage.getItem("access_token") ?? "";
+
+      const res = await fetch(`http://localhost:8000/api/job-seeker/${user.id}/saved-jobs`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, // Send the token to fix 401 errors
+        },
+      });
+
       const data = await res.json();
-      setSavedJobs(data);
+      
+      // Use ?? [] so if the backend returns nothing, the app doesn't crash
+      setSavedJobs(data.saved_jobs ?? []); 
     } catch (err) {
       console.error("Error loading saved jobs:", err);
     }
   };
 
   fetchSavedJobs();
-}, [user]);
+}, [user?.id]);
 
 
 useEffect(() => {
   const fetchApplied = async () => {
     if (user?.id && isRole("job_seeker")) {
       try {
-        const jobs = await getAppliedJobs(Number(user.id));
-        setAppliedJobs(jobs);
+        const token = localStorage.getItem("access_token") ?? "";
+        
+        // We fetch directly here to ensure the Authorization header is sent
+        const res = await fetch(`http://localhost:8000/api/job-seeker/${user.id}/applied-jobs`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+        
+        const data = await res.json();
+        
+        // ✅ The ?? [] ensures appliedJobs is always an array, preventing .map() crashes
+        setAppliedJobs(data.applications ?? []);
       } catch (err) {
         console.error("Failed to load applied jobs", err);
+        setAppliedJobs([]); // Fallback to empty list on error
       }
     }
   };
 
   fetchApplied();
-}, [user]);
+}, [user?.id]); // Using user.id is more stable than the whole user object
 
-
- const fetchMyJobs = async () => {
-  if (user?.id) {
+const fetchMyJobs = async () => {
+  if (user?.id && isRole("employer")) {
     try {
-      const res = await fetch(`http://localhost:8000/api/employer/${user.id}/jobs`);
+      const token = localStorage.getItem("access_token") ?? "";
+      
+      const res = await fetch(`http://localhost:8000/api/employer/${user.id}/jobs`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      
       const data = await res.json();
-      setMyJobs(data.jobs);
+      
+      // ✅ Fallback to empty array if no jobs are returned
+      setMyJobs(data.jobs ?? []);
     } catch (error) {
       console.error("Failed to fetch employer jobs:", error);
+      setMyJobs([]);
     }
   }
 };
-
-useEffect(() => {
-  fetchMyJobs();
-}, [user?.id]);
 
 
 const toggleStatus = async (job: Job) => {
